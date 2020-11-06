@@ -11,6 +11,9 @@ class XhrLoader {
     if (config && config.xhrSetup) {
       this.xhrSetup = config.xhrSetup;
     }
+    if (config && config.signedParams) {
+      this.signedParams = config.signedParams;
+    }
   }
 
   destroy () {
@@ -61,7 +64,11 @@ class XhrLoader {
         }
       }
       if (!xhr.readyState) {
-        xhr.open('GET', context.url, true);
+        if (this.signedParams){
+          xhr.open('GET', context.url + this.signedParams, true);
+        }else{
+          xhr.open('GET', context.url, true);
+        }
       }
     } catch (e) {
       // IE11 throws an exception on xhr.open if attempting to access an HTTP resource over HTTPS
